@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    container_name: my_project_directory_web
+    ports:
+      - "8000:80"
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - .:/var/www/symfony
+    depends_on:
+      - php
+    restart: always
+
+  db:
+    image: postgres:latest
+    container_name: my_project_directory_db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: preguntadosFinal
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: always
+
+  php:
+    image: php:8.2.0-fpm
+    container_name: my_project_directory_php
+    volumes:
+      - .:/var/www/symfony
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  db_data:
