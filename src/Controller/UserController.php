@@ -29,6 +29,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
+            $user->setPuntuacion(100);
             $this->em->persist($user);
             $this->em->flush();
 

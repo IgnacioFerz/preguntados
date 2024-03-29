@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
       - .:/var/www/symfony
     depends_on:
       - php
@@ -19,13 +19,13 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: preguntadosFinal
+      POSTGRES_DB: preguntados
     volumes:
       - db_data:/var/lib/postgresql/data
     restart: always
 
   php:
-    image: php:8.2.0-fpm
+    build: .docker/php-fpm
     container_name: my_project_directory_php
     volumes:
       - .:/var/www/symfony
