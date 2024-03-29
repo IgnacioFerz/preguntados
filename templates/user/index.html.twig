@@ -1,14 +1,55 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #c52222; /* Color de fondo de la página */
+        }
+        .container { /* Modify Bootstrap container class */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Altura mínima del formulario */
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff; /* Color de fondo del formulario */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para el formulario */
+        }
+        .container h1 { /* Modifica el título dentro del contenedor */
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .form-control { /* Mantén el estilo de los campos de Bootstrap */
+            margin-bottom: 10px;
+        }
+        .mt-4 { /* Mantén el margen superior de Bootstrap (puedes eliminarlo si lo deseas) */
+            margin-top: 1.5rem;
+        }
+    </style>
+{% endblock %}
 
 {% block title %}Registro{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-center">
+    <div class="container bg-info">
+        {{ form_start(registration_form) }}
+
+        <div class="row">
             <div class="col-md-6">
-                <h1>Registro!</h1>
-                {{ form(registration_form) }}
+                {{ form_row(registration_form.name, {'type': 'text','attr': {'class': 'form-control mb-3'}}) }}
+                {{ form_row(registration_form.password, {'type': 'password', 'attr': {'class': 'form-control mb-3'}}) }}
+            </div>
+            <div class="col-md-6">
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(registration_form.email, {'type': 'email','attr': {'class': 'form-control mb-3'}}) }}
+            </div>
+
+
+        {{ form_end(registration_form) }}
     </div>
 {% endblock %}
