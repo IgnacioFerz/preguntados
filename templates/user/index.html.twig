@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
-<<<<<<< Updated upstream
-=======
 {% block stylesheets %}
     <style>
-
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #c52222; /* Color de fondo de la página */
+        }
         .container { /* Modify Bootstrap container class */
             display: flex;
             justify-content: center;
@@ -28,16 +30,11 @@
         }
     </style>
 {% endblock %}
->>>>>>> Stashed changes
-
 {% block title %}Registro{% endblock %}
 
 {% block body %}
-<<<<<<< Updated upstream
     <div class="container">
         <div class="row justify-content-center">
-=======
-
     <div class="container bg-info">
         {{ form_start(registration_form) }}
 
@@ -46,11 +43,14 @@
                 {{ form_row(registration_form.name, {'type': 'text','attr': {'class': 'form-control mb-3'}}) }}
                 {{ form_row(registration_form.password, {'type': 'password', 'attr': {'class': 'form-control mb-3'}}) }}
             </div>
->>>>>>> Stashed changes
             <div class="col-md-6">
-                <h1>Registro!</h1>
-                {{ form(registration_form) }}
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(registration_form.email, {'type': 'email','attr': {'class': 'form-control mb-3'}}) }}
+            </div>
+
+        {{ form_end(registration_form) }}
     </div>
 {% endblock %}
