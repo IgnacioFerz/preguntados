@@ -28,11 +28,6 @@ class UserController extends AbstractController
         $crearUser = $this->userService->HandleCreateUser($request, $passwordHasher, $user);
         if($crearUser->getStatusCode() === Response::HTTP_OK)
         {
-        feature/preguntados-back-logic
-            $user->setPuntuacion(100);
-            main
-            $this->em->persist($user);
-            $this->em->flush();
             return $this->redirectToRoute('app_login');
         }
         $this->addFlash('error', $crearUser->getContent());

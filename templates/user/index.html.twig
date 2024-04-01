@@ -1,11 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     <style>
-{% block stylesheets %}
-    <style>
-        body {
-            background-color: #c52222; /* Color de fondo de la página */
-        }
         .container { /* Modify Bootstrap container class */
             display: flex;
             justify-content: center;
@@ -33,23 +28,23 @@
 {% block title %}Registro{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-center">
     <div class="container bg-info">
-        {{ form_start(registration_form) }}
+    {{ form_start(registration_form) }}
 
-        <div class="row">
-            <div class="col-md-6">
-                {{ form_row(registration_form.name, {'type': 'text','attr': {'class': 'form-control mb-3'}}) }}
-                {{ form_row(registration_form.password, {'type': 'password', 'attr': {'class': 'form-control mb-3'}}) }}
-            </div>
-            <div class="col-md-6">
-            </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(registration_form.name, {'type': 'text','attr': {'class': 'form-control mb-3'}}) }}
+            {{ form_row(registration_form.password, {'type': 'password', 'attr': {'class': 'form-control mb-3'}}) }}
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                {{ form_row(registration_form.email, {'type': 'email','attr': {'class': 'form-control mb-3'}}) }}
-            </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(registration_form.email, {'type': 'email','attr': {'class': 'form-control mb-3'}}) }}
+        </div>
+
 
         {{ form_end(registration_form) }}
     </div>

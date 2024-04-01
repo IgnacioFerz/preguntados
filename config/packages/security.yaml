@@ -14,24 +14,12 @@ security:
             security: false
         main:
             lazy: true
-<<<<<<< Updated upstream
-            provider: users_in_memory
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                enable_csrf: true
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
-=======
             provider: app_user_provider
             form_login:
                 login_path: app_login
                 check_path: app_login
             logout:
                 path: /logout
->>>>>>> Stashed changes
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
