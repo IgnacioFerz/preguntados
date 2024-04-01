@@ -28,6 +28,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column]
     private ?int $puntuacion = null;
 
+    #[ORM\Column]
+    private array $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -83,16 +86,36 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getRoles(): array
     {
+<<<<<<< Updated upstream
         // TODO: Implement getRoles() method.
+=======
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+>>>>>>> Stashed changes
     }
 
     public function eraseCredentials(): void
     {
+<<<<<<< Updated upstream
         // TODO: Implement eraseCredentials() method.
+=======
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+>>>>>>> Stashed changes
     }
 
     public function getUserIdentifier(): string
     {
+<<<<<<< Updated upstream
         // TODO: Implement getUserIdentifier() method.
+=======
+        return (string) $this->name;
+>>>>>>> Stashed changes
     }
 }
