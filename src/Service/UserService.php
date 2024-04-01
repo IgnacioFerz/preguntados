@@ -6,8 +6,11 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 
+use http\Exception;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserService
@@ -19,7 +22,7 @@ class UserService
     {
 
     }
-    public function HandleCreateUser(Request $request, UserPasswordHasherInterface $passwordHasher, User $user)
+    public function HandleCreateUser(Request $request, UserPasswordHasherInterface $passwordHasher, User $user):JsonResponse
     {
         $registration_form = $this->formFactory->create(UserType::class, $user);
         $registration_form->handleRequest($request);
@@ -31,16 +34,25 @@ class UserService
                 $plaintextPassword
             );
             $user->setPassword($hasedPassword);
+            $user->setRoles(['ROLE_ADMIN']);
             $user->setPuntuacion(100);
             $this->userRepository->save($user,true);
-            return true;
+            return new JsonResponse(['succes'=>true]);
         }
-        return false;
+        return new JsonResponse(['error' => 'Solicitud no valida'], Response::HTTP_BAD_REQUEST);
     }
     private function checkUserExist($name)
     {
         $user = $this->userRepository->findOneBy(['name' => $name]);
         if (!empty($user)) {
+            dd($user);
+        }
+    }
+    public function checkdb()
+    {
+        $user = $this->userRepository->findBy(['id' => 15]);
+        if (!empty($user))
+        {
             dd($user);
         }
     }

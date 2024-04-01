@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,6 +27,9 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
 
     #[ORM\Column]
     private ?int $puntuacion = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     public function getId(): ?int
     {
@@ -77,5 +82,40 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
         $this->puntuacion = $puntuacion;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+<<<<<<< Updated upstream
+        // TODO: Implement getRoles() method.
+=======
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+>>>>>>> Stashed changes
+    }
+
+    public function eraseCredentials(): void
+    {
+<<<<<<< Updated upstream
+        // TODO: Implement eraseCredentials() method.
+=======
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+>>>>>>> Stashed changes
+    }
+
+    public function getUserIdentifier(): string
+    {
+<<<<<<< Updated upstream
+        // TODO: Implement getUserIdentifier() method.
+=======
+        return (string) $this->name;
+>>>>>>> Stashed changes
     }
 }

@@ -17,24 +17,25 @@ use Symfony\Component\Routing\Attribute\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $em
-        // private readonly UserRepository $repository,
-        // private readonly UserService $userService
+        private readonly UserRepository $repository,
+        private readonly UserService $userService
     ){}
     #[Route('/user', name: 'app_user')]
-    public function index(Request $request): Response
+    public function index(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
+        //$this->userService->checkdb();
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
+        $crearUser = $this->userService->HandleCreateUser($request, $passwordHasher, $user);
+        if($crearUser->getStatusCode() === Response::HTTP_OK)
         {
+        feature/preguntados-back-logic
             $user->setPuntuacion(100);
+            main
             $this->em->persist($user);
             $this->em->flush();
-
+            return $this->redirectToRoute('app_login');
         }
-
+        $this->addFlash('error', $crearUser->getContent());
 
         return $this->render('user/index.html.twig', [
             'registration_form' => $this->createForm(UserType::class, $user)

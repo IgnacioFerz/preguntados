@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     <style>
+{% block stylesheets %}
+    <style>
         body {
             background-color: #c52222; /* Color de fondo de la página */
         }
@@ -28,10 +30,11 @@
         }
     </style>
 {% endblock %}
-
 {% block title %}Registro{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
     <div class="container bg-info">
         {{ form_start(registration_form) }}
 
@@ -43,12 +46,10 @@
             <div class="col-md-6">
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-6">
                 {{ form_row(registration_form.email, {'type': 'email','attr': {'class': 'form-control mb-3'}}) }}
             </div>
-
 
         {{ form_end(registration_form) }}
     </div>
