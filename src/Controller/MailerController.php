@@ -11,10 +11,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class MailerController extends AbstractController
 {
     #[Route('/email')]
-    public function sendEmail(MailerInterface $mailer): void
+    public function sendEmail(MailerInterface $mailer): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $email = (new Email())
-            ->from('hello@example.com')
+            ->from('ignacio.fernandez.fernandez@iesjulianmarias.es')
             ->to('ignacio.fernandez.fernandez@iesjulianmarias.es')
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
@@ -25,5 +25,6 @@ class MailerController extends AbstractController
             ->html('<p>See Twig integration for better HTML integration!</p>');
 
         $mailer->send($email);
+        return $this->redirectToRoute('app_principal');
     }
     }
