@@ -19,9 +19,8 @@ class UserService
         private readonly FormFactoryInterface $formFactory,
         private readonly UserRepository $userRepository
     )
-    {
+    {}
 
-    }
     public function HandleCreateUser(Request $request, UserPasswordHasherInterface $passwordHasher, User $user):JsonResponse
     {
         $registration_form = $this->formFactory->create(UserType::class, $user);

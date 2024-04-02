@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PrincipalController!{% endblock %}
+
+{% block body %}
+
+    <div id="game-area">
+        {% for question in questions %}
+            <div class="question">
+                <h2>{{ question.category }}</h2>
+                <p>{{ question.question }}</p>
+                <ul class="answers">
+                    {% for answer in question.incorrect_answers %}
+                        <li><input type="radio" name="answer" value="{{ answer }}"> {{ answer }}</li>
+                    {% endfor %}
+                    <li><input type="radio" name="answer" value="{{ question.correct_answer }}"> {{ question.correct_answer }}</li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
