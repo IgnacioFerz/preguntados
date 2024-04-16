@@ -4,19 +4,75 @@
 
 {% block body %}
 
-    <div id="game-area">
-        {% for question in questions %}
-            <div class="question">
-                <h2>{{ question.category }}</h2>
-                <p>{{ question.question }}</p>
-                <ul class="answers">
-                    {% for answer in question.incorrect_answers %}
-                        <li><input type="radio" name="answer" value="{{ answer }}"> {{ answer }}</li>
-                    {% endfor %}
-                    <li><input type="radio" name="answer" value="{{ question.correct_answer }}"> {{ question.correct_answer }}</li>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntados - Symfony</title>
+
+</head>
+<style>
+    body {
+        height: 100vh;
+        background-color: #22a7bd;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-content {
+        flex: 1;
+    }
+
+    footer {
+        flex: 0 0 auto;
+        align-items: flex-end;
+    }
+
+</style>
+
+<body>
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+            <a class="navbar-brand" href="#">Preguntados</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button id='buscarPartidaButton' class="nav-link" href="#">Buscar partida</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" href="#">Mi perfil</button>
+                    </li>
                 </ul>
             </div>
-        {% endfor %}
+        </nav>
+
+        <div class="container mt-5">
+            <!-- Main Content -->
+            <ul>
+                <li>1º Nacho</li>
+            </ul>
+            <p id="userIdDisplay"></p>
+        </div>
     </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">IgnacioFerz@github &hearts;</span>
+        </div>
+    </footer>
+
+    {% block javascripts %}
+        <script src="{{ asset('js/index.js') }}" defer></script>
+    {% endblock %}
+
+</body>
+
+</html>
 
 {% endblock %}

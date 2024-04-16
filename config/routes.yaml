@@ -2,4 +2,7 @@ controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
+
+        App\Api\UserInfoApi:
+            resource: 'App\Api\UserInfoApi.php'
     type: attribute
