@@ -21,7 +21,7 @@ class UserService
     )
     {}
 
-    public function HandleCreateUser(Request $request, UserPasswordHasherInterface $passwordHasher, User $user):JsonResponse
+    public function handleCreateUser(Request $request, UserPasswordHasherInterface $passwordHasher, User $user):JsonResponse
     {
         $registration_form = $this->formFactory->create(UserType::class, $user);
         $registration_form->handleRequest($request);
@@ -35,6 +35,7 @@ class UserService
             $user->setPassword($hasedPassword);
             $user->setRoles(['ROLE_ADMIN']);
             $user->setPuntuacion(100);
+            $user->setQueue('disable');
             $this->userRepository->save($user,true);
             return new JsonResponse(['succes'=>true]);
         }
