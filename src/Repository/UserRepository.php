@@ -29,6 +29,15 @@ class UserRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getUsersToQueue(): array
+    {
+        $estado = 'searching';
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.queue  = :date')
+            ->setParameter('date', $estado)
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return User[] Returns an array of User objects

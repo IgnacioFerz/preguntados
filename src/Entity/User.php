@@ -34,6 +34,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column]
     private ?bool $isVerified = false;
 
+    #[ORM\Column(length: 255)]
+    private ?string $queue = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,6 +121,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getQueue(): ?string
+    {
+        return $this->queue;
+    }
+
+    public function setQueue(string $queue): static
+    {
+        $this->queue = $queue;
 
         return $this;
     }
