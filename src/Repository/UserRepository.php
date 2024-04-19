@@ -38,6 +38,26 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getUserForId(User $user): int
+
+    {
+        $id = $user->getId();
+        return $id;
+    }
+
+    public function addUserToQueue(User $user)
+    {
+        $user->setQueue('searching');
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+    public function removeUserToQueue(User $user)
+    {
+        $user->setQueue('disable');
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
 
     //    /**
     //     * @return User[] Returns an array of User objects
