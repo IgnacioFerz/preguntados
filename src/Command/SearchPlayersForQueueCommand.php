@@ -39,16 +39,9 @@ class SearchPlayersForQueueCommand extends Command
         $users = $this->userRepository->getUsersToQueue();
         foreach ($users as $user) {
 
-            dd($user);
-           // if (!empty($user->getSubscriptionId())) {
-           //     $tittle = sprintf("Hola, %s, ¡ya es hora del cuento!", GetTaleNotificationTitleService::getTitle($user));
-           //     $notification = $this->notificationService->createNotification(
-            //         $tittle,
-            //        "¡Hay que ponerse el pijamita! Que vuestro cuento ya está listo y esperándoos 💖",
-            //        [$user->getSubscriptionId()]
-            //    );
-            //    $this->notificationService->sendNotificationImmediately($notification);
-            //}
+            $count = count($users);
+            dd($count);
+
         }
         $io->success('Getting queue users');
         return Command::SUCCESS;

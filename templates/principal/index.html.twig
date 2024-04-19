@@ -27,7 +27,33 @@
         flex: 0 0 auto;
         align-items: flex-end;
     }
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 10px solid #f3f3f3; /* Color de borde gris claro */
+        border-radius: 50%;
+        border-top: 10px solid #3498db; /* Color de la barra superior (azul) */
+        animation: spin 1.2s linear infinite; /* Animación de giro */
+        display: none; /* Initially hidden */
+    }
 
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .buscando-partida {
+        font-size: 14px;
+        margin-top: 10px;
+        color: #3498db; /* Color del texto azul */
+        display: none; /* Initially hidden */
+    }
+    .cancelar-cola {
+        font-size: 14px;
+        margin-top: 10px;
+        color: #3498db; /* Color del texto azul */
+        display: none; /* Initially hidden */
+    }
 </style>
 
 <body>
@@ -40,10 +66,13 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <div id="spinner" class="spinner"></div>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <button id='buscarPartidaButton' class="nav-link" href="#">Buscar partida</button>
+                        <button id="buscarPartidaButton" class="nav-link" href="#">Buscar partida</button>
+                        <button id="cancelarColaButton" class="nav-link d-none" href="#">Cancelar cola</button>
                     </li>
                     <li class="nav-item">
                         <button class="nav-link" href="#">Mi perfil</button>
