@@ -14,12 +14,9 @@ class PrincipalController extends AbstractController
     #[Route('/principal', name: 'app_principal')]
     public function index(MailerInterface $mailer): Response
     {
-        $questionService = new GameService();
-        $questions = $questionService->getQuestions();
 
 
         return $this->render('principal/index.html.twig', [
-            'questions' => $questions,
         ]);
     }
 }
