@@ -20,6 +20,15 @@ class PartidaRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Partida::class);
     }
+    public function findGameById(int $id): ?Partida
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 
     //    /**
     //     * @return Partida[] Returns an array of Partida objects
