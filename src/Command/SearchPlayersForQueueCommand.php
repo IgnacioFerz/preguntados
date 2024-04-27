@@ -14,7 +14,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+
 
 #[AsCommand(
     name: 'search-players-queue',
@@ -25,12 +30,18 @@ class SearchPlayersForQueueCommand extends Command
     private UserRepository $userRepository;
     private $entityManager;
     private RouterInterface $router;
+    private KernelInterface $kernel;
 
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, RouterInterface $router)
+    public function __construct(UserRepository $userRepository,
+                                EntityManagerInterface $entityManager,
+                                RouterInterface $router,
+                                KernelInterface $kernel
+    )
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->router = $router;
+        $this->kernel = $kernel;
         parent::__construct();
     }
 
@@ -58,8 +69,11 @@ class SearchPlayersForQueueCommand extends Command
                 $partida->setEstado('en-game');
                 $this->entityManager->persist($partida);
                 $this->entityManager->flush();
+                $this->userRepository->addGameQueue($users[0]);
+                $this->userRepository->addGameQueue($users[1]);
                 // Obtener preguntas de la API de Trivial
                 $preguntas = $this->getPreguntasFromTrivialAPI();
+
                 // Añadir preguntas a la partida
                 foreach ($preguntas as $preguntaData) {
                     $pregunta = new Pregunta();
@@ -76,8 +90,17 @@ class SearchPlayersForQueueCommand extends Command
 
                 // Pintar las preguntas a los jugadores
                 //$this->sendPreguntasToPlayers($users[0], $users[1], $preguntas);
+                $gameId = $partida->getId();
+                if ($gameId) {
+                    $url = $this->router->generate('app_partida', ['id' => $gameId]);
+                    $request = Request::create($url);
+                    $this->kernel->handle($request); // Handle the request, but don't return the response
+                }
 
-                $io->success('Partida creada y jugadores unidos');
+                break;
+            }
+            else{
+                $io->warning('No hay suficientes jugadores en la cola para crear una partida.');
             }
         }
 
@@ -87,24 +110,25 @@ class SearchPlayersForQueueCommand extends Command
 
     private function getPreguntasFromTrivialAPI(): array
     {
-        $apiUrl = 'https://opentdb.com/api.php?amount=10&type=multiple'; // URL de la API con 10 preguntas tipo multiple
-
+        $apiUrl = 'https://the-trivia-api.com/api/questions?limit=10'; // URL de la API con 10 preguntas tipo multiple
         $response = file_get_contents($apiUrl); // Obtener la respuesta JSON de la API
         $responseData = json_decode($response, true); // Decodificar JSON a un array
 
-        if (isset($responseData['results'])) {
+        if ($responseData) { // Check if any data is returned
             $preguntas = []; // Array para almacenar las preguntas
 
-            foreach ($responseData['results'] as $preguntaData) {
+            foreach ($responseData as $preguntaData) {
                 $pregunta = [
                     'texto' => $preguntaData['question'],
                     'respuestas' => [
-                        $preguntaData['correct_answer'] => true,
-                        $preguntaData['incorrect_answers'][0] => false,
-                        $preguntaData['incorrect_answers'][1] => false,
-                        $preguntaData['incorrect_answers'][2] => false,
+                        $preguntaData['correctAnswer'] => true,
+                        $preguntaData['incorrectAnswers'][0] => false,
+                        $preguntaData['incorrectAnswers'][1] => false,
+                        $preguntaData['incorrectAnswers'][2] => false,
                     ]
                 ];
+
+                $preguntas[] = $pregunta;
             }
 
             return $preguntas;

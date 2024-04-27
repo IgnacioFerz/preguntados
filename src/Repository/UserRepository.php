@@ -57,6 +57,12 @@ class UserRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+    public function addGameQueue(User $user)
+    {
+        $user->setQueue('en-game');
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
 
 
     //    /**

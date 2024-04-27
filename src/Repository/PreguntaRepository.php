@@ -20,7 +20,15 @@ class PreguntaRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Pregunta::class);
     }
-
+    public function searchForGameId($id) :array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.partida = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     //    /**
     //     * @return Pregunta[] Returns an array of Pregunta objects
     //     */
