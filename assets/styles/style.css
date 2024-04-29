@@ -1,0 +1,86 @@
+.question-item {
+    display: none; /* Esconder todas las preguntas */
+    width: 500px; /* Ancho de las preguntas */
+    word-wrap: break-word; /* Permite que las palabras largas se rompan en varias líneas */
+}
+
+.question-item.correct {
+    background-color: #c0ffc0; /* Verde para las preguntas correctas */
+}
+
+.question-item.incorrect {
+    background-color: #ff9999; /* Rojo para las preguntas incorrectas */
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Color de fondo gris claro */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+
+}
+
+.container-fluid {
+    padding: 0; /* Elimina el padding predeterminado del contenedor */
+}
+
+.row {
+    margin-bottom: 20px; /* Espacio entre secciones */
+}
+
+.text-center {
+    text-align: center;
+}
+
+h1, h2, h3 {
+    margin-top: 0; /* Elimina el margen superior predeterminado */
+}
+
+.list-group-item {
+    border: none; /* Elimina el borde de los elementos de la lista */
+    padding: 20px;
+    background-color: #fff; /* Color de fondo blanco para las respuestas */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.btn {
+    margin-bottom: 10px; /* Espacio entre botones */
+    width: 100%; /* Botones de ancho completo */
+    font-size: 18px; /* Tamaño de fuente más grande */
+}
+
+.timer {
+    font-size: 36px; /* Tamaño de fuente grande para el temporizador */
+    font-weight: bold; /* Texto en negrita */
+    color: #f00; /* Color rojo para el temporizador */
+}
+
+.score {
+    font-size: 24px; /* Tamaño de fuente mediano para el puntaje */
+    font-weight: bold; /* Texto en negrita */
+}
+.container-fluid, .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.progress-container {
+    margin-top: 20px; /* Espacio entre el recuadro y el contenido del juego */
+}
+
+.progress {
+    height: 30px; /* Altura del recuadro de progreso */
+    background-color: #eee; /* Color de fondo del recuadro */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.progress-bar {
+    background-color: #007bff; /* Color de la barra de progreso */
+    width: 0; /* Ancho inicial de la barra de progreso (0%) */
+    transition: width 0.5s ease; /* Animación de transición para el ancho */
+}
+
+.progress-bar.progress-bar-striped {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, rgba(255, 255, 255, 0.75) 1px, rgba(255, 255, 255, 0.15) 5px, rgba(255, 255, 255, 0.75) 5px);
+}
