@@ -5,39 +5,43 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Partida {{ partida.id }}</h1>
-
-    <div class="container">
+    <div id="timer">15 s</div>
+    <div id="score">0</div>
+    <div id="partida-data" data-partida-id="{{ partida.id }}" data-jugador1-id="{{ partida.jugador1.id }}" data-jugador2-id="{{ partida.jugador2.id }}"></div>
+    <div class="container-fluid flex-column align-items-center">
         <div class="row">
-            <div class="col-md-6">
-                <h2>Jugador 1: {{ jugador1.name }}</h2>
-            </div>
-            <div class="col-md-6">
-                <h2>Jugador 2: {{ jugador2.name }}</h2>
-            </div>
-        </div>
-
-        <div class="row mt-3">
             <div class="col-md-12">
-                <h2>Preguntas</h2>
-                <ul class="list-group">
+                <h1 class="h5">Preguntas</h1>
+                <ul id="question-list" class="card list-group">
                     {% for pregunta in preguntas %}
-                        <li class="list-group-item">
+                        <li class="card-body question-item list-group-item" data-correct-answer="{{ pregunta.respuestaCorrecta }}">
                             {{ pregunta.pregunta }}
                             <br>
-                            **Respuesta correcta:** {{ pregunta.respuestaCorrecta }}
-                            <br>
-                            **Respuestas incorrectas:**
                             <ul>
+                                <li>
+                                    <button class="answer-button btn btn-sm btn-outline-primary" data-answer="{{ pregunta.respuestaCorrecta }}">{{ pregunta.respuestaCorrecta }}</button>
+                                </li>
                                 {% for respuestaIncorrecta in pregunta.respuestasIncorrectas %}
-                                    <li>{{ respuestaIncorrecta }}</li>
+                                    <li>
+                                        <button class="answer-button btn btn-sm btn-outline-primary" data-answer="{{ respuestaIncorrecta }}">{{ respuestaIncorrecta }}</button>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </li>
                     {% endfor %}
                 </ul>
+
+                <div class="progress-container">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <span>0%</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
+    <div id="result"></div>
+    <script type="module" src="{{ asset('js/partida.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('styles/style.css') }}">
 {% endblock %}
