@@ -33,6 +33,12 @@ class Partida
     #[ORM\OneToMany(targetEntity: Pregunta::class, mappedBy: 'partida')]
     private Collection $preguntas;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $preguntaJugador1 = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $preguntaJugador2 = null;
+
     public function __construct()
     {
         $this->preguntas = new ArrayCollection();
@@ -129,6 +135,30 @@ class Partida
                 $pregunta->setPartida(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPreguntaJugador1(): ?int
+    {
+        return $this->preguntaJugador1;
+    }
+
+    public function setPreguntaJugador1(?int $preguntaJugador1): static
+    {
+        $this->preguntaJugador1 = $preguntaJugador1;
+
+        return $this;
+    }
+
+    public function getPreguntaJugador2(): ?int
+    {
+        return $this->preguntaJugador2;
+    }
+
+    public function setPreguntaJugador2(?int $preguntaJugador2): static
+    {
+        $this->preguntaJugador2 = $preguntaJugador2;
 
         return $this;
     }

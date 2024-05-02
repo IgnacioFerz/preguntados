@@ -23,14 +23,14 @@ class UserInfoApiController extends AbstractController
     }
 
     #[Route('/api/user/id', name: 'getid', methods: ['GET'])]
-    public function getUserId(Request $request): Response
+    public function getUserId(): Response
     {
         $user = $this->getUser();
         $userId = $user->getId(); // Get the user ID from the User object
         $data = ['userId' => $userId]; // Create a data array with the user ID
         $json = $this->serializer->serialize($data, 'json'); // Serialize the data to JSON
 
-        return new Response($json, Response::HTTP_OK); // Return the JSON response
+        return new Response($json, Response::HTTP_OK);
     }
 
     #[Route('/api/user/name', name: 'getname', methods: ['GET'])]

@@ -1,27 +1,25 @@
+import axios from "axios";
 // Variables
 let currentQuestionIndex = 0;
 let currentQuestionElement = null;
 let timerInterval = null;
 let timeRemaining = 15;
-let score = 0;
+let puntuacion = 0;
 let unansweredQuestions = [];
 let correctAnswers = [];
 let incorrectAnswers = [];
-let jugador1Score = 0;
-let jugador2Score = 0;
 const partidaDataElement = document.getElementById('partida-data');
 const partidaId = partidaDataElement.dataset.partidaId;
-const jugador1Id = partidaDataElement.dataset.jugador1Id;
-const jugador2Id = partidaDataElement.dataset.jugador2Id;
+let respuesta = '';
+let userId = await getIdUserOn();
 
-// Use the retrieved IDs in your JavaScript code
 console.log("Partida ID:", partidaId);
-console.log("Jugador 1 ID:", jugador1Id);
-console.log("Jugador 2 ID:", jugador2Id);
+
 
 // Obtener la lista de preguntas
 let questionList = document.getElementById('question-list');
 let questionItems = questionList.querySelectorAll('.question-item');
+
 
 // Función para mostrar la siguiente pregunta
 function showNextQuestion() {
@@ -37,10 +35,9 @@ function showNextQuestion() {
     // Comprobar si se ha llegado al final del juego
     if (currentQuestionIndex === questionItems.length) {
         // Enviar los resultados al back-end
-        sendResultsToBackend();
+        seeResult();
         return;
     }
-
     currentQuestionElement = questionItems[currentQuestionIndex];
 
     // Mostrar la siguiente pregunta
@@ -78,50 +75,46 @@ function disableAnswerButtons() {
 }
 
 // Función para marcar una respuesta como incorrecta
-function markAnswerAsIncorrect(jugadorId) {
+function markAnswerAsIncorrect() {
     currentQuestionElement.classList.add('incorrect');
-    if (jugadorId === jugador1Id) {
-        jugador1Score--;
-    } else {
-        jugador2Score--;
-    }
+    puntuacion--;
+    respuesta = 'incorrecta';
     incorrectAnswers.push(currentQuestionElement);
-
     // Añadir un retraso de 2 segundos antes de mostrar la siguiente pregunta
     setTimeout(function() {
         disableAnswerButtons();
         showNextQuestion();
+        updateQuestion();
     }, 2000);
+    sendResultsToBackend()
 }
 
 // Función para marcar una respuesta como correcta
-function markAnswerAsCorrect(questionElement, jugadorId) {
+function markAnswerAsCorrect(questionElement) {
     questionElement.classList.add('correct');
-    if (jugadorId === jugador1Id) {
-        jugador1Score++;
-    } else {
-        jugador2Score++;
-    }
+    puntuacion++;
+    respuesta = 'correcta';
     correctAnswers.push(questionElement);
 
     // Añadir un retraso de 2 segundos antes de mostrar la siguiente pregunta
     setTimeout(function() {
         disableAnswerButtons();
         showNextQuestion();
+        updateQuestion();
     }, 2000);
+    sendResultsToBackend()
 }
 
 // Función para marcar una pregunta sin respuesta como incorrecta
-function markUnansweredQuestionAsIncorrect(jugadorId) {
+function markUnansweredQuestionAsIncorrect() {
     unansweredQuestions.push(currentQuestionElement);
     currentQuestionElement.classList.add('incorrect');
-    if (jugadorId === jugador1Id) {
-        jugador1Score--;
-    } else {
-        jugador2Score--;
-    }
+    puntuacion--;
+    respuesta = 'incorrecta';
     incorrectAnswers.push(currentQuestionElement);
-
+    showNextQuestion();
+    updateQuestion();
+    sendResultsToBackend();
 }
 
 // Manejo de clics en las preguntas
@@ -151,110 +144,81 @@ questionList.addEventListener('click', function(event) {
     }
 });
 
-function getIdUserOn()
-{
+async function updateQuestion(resultElement){
+    try
+    {
+        const response = await axios.post('/api/update/question', {
+            partidaId: parseInt(partidaId),
+            userId: userId
+        });
+        if (response.data.message) { // Hay un ganador
+            let message = document.createElement('p');
+            message.classList.add('lead', 'text-center', 'text-success', 'mt-3');
+            message.textContent = response.data.message;
 
+            let button = document.createElement('button');
+            button.classList.add('btn', 'btn-primary', 'mt-3');
+            button.textContent = 'Volver a la página principal';
+            button.onclick = function() {
+                window.location.href = '/principal';
+            };
+
+            resultElement.innerHTML = '';
+            resultElement.appendChild(message);
+            resultElement.appendChild(button);
+            currentQuestionElement.style.display = 'none';
+            clearInterval(timerInterval);
+        }
+    }catch (error) {
+        console.error('Error al actualizar la posicion de la pregunta:', error);
+        return null; // Devuelve null en caso de error
+    }
+}
+updateQuestion(document.getElementById('result'));
+async function getIdUserOn() {
+    try {
+        const response = await axios.get('/api/user/id');
+        const userIdObject = response.data; // Suponiendo que response.data es el objeto
+        const userId = userIdObject.userId; // Extrae la propiedad userId
+        console.log('ID de usuario:', userId);
+        return userId; // Devuelve el userId extraído
+    } catch (error) {
+        console.error('Error al recuperar el ID de usuario:', error);
+        return null; // Devuelve null en caso de error
+    }
 }
 
 // Función para enviar los resultados al back-end
-function sendResultsToBackend() {
-    // Prepare data to send to the backend
-    const data = {
-        partidaId: partidaId,
-        jugador1Id: jugador1Id,
-        jugador1Score: jugador1Score,
-        jugador2Id: jugador2Id,
-        jugador2Score: jugador2Score,
-    };
-    console.log(data)
-    // Create XMLHttpRequest object for sending data
-    const xhr = new XMLHttpRequest();
+async function sendResultsToBackend() {
+    try {
+        const data = {
+            partidaId: parseInt(partidaId),
+            userId: userId,
+            puntuacion: puntuacion,
+            respuesta: respuesta,
+        };
+        const jsonData = JSON.stringify(data);
+        const response = await axios.post('/api/final/result', jsonData);
 
-    xhr.open('POST', '/api/final'); // Replace with your actual endpoint
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    // Send the data as JSON
-    xhr.send(JSON.stringify(data));
-
-    // Handle the response from the backend
-    xhr.onload = function () {
-        if (xhr.status === 200) {
+        if (response.status === 200 || response.status === 201 ) {
             console.log('Datos enviados correctamente');
-            displayResultsScreen(); // Call function to display results
         } else {
-            console.error('Error al enviar datos:', xhr.statusText);
+            console.error('Error al enviar datos:', response.statusText);
         }
-    };
-    clearInterval(timerInterval);
-}
-// Function to display the results screen
-
-function displayResultsScreen() {
-
-    // Create results container
-    const resultsContainer = document.createElement('div');
-    resultsContainer.id = 'results-screen';
-    document.body.appendChild(resultsContainer);
-
-    // Display correct, incorrect, and unanswered questions counts
-    const correctCount = correctAnswers.length;
-    const incorrectCount = incorrectAnswers.length;
-    const unansweredCount = unansweredQuestions.length;
-
-    resultsContainer.innerHTML = `
-    <h2>Results</h2>
-    <p>Correct: ${correctCount}</p>
-    <p>Incorrect: ${incorrectCount}</p>
-    <p>Unanswered: ${unansweredCount}</p>
-  `;
-
-
-    // Display the questions with their status
-    const questionsContainer = document.createElement('div');
-    resultsContainer.appendChild(questionsContainer);
-
-    for (const question of questionItems) {
-        const status =
-            correctAnswers.includes(question) ?
-                'correct' :
-                incorrectAnswers.includes(question) ?
-                    'incorrect' :
-                    'unanswered';
-
-        questionsContainer.innerHTML += `
-      <p class="${status}">${question.innerText}</p>
-    `;
+    } catch (error) {
+        console.error('Error al enviar datos:', error);
+    } finally {
+        clearInterval(timerInterval);
     }
-    
-    // Display winner information
-    let winner;
-    if (score > 0) {
-        winner = 'You win!';
+}
+async function seeResult(){
+    const response = await axios.post('/api/final');
+
+    if (response.status === 200 || response.status === 201 ) {
+        console.log('Datos enviados correctamente');
     } else {
-        winner = 'You lose!';
+        console.error('Error al enviar datos:', response.statusText);
     }
-    resultsContainer.innerHTML += `<p>${winner}</p>`;
-
-    // Add a button to redirect to the main menu
-    const mainMenuButton = document.createElement('button');
-    mainMenuButton.textContent = 'Main Menu';
-    mainMenuButton.onclick = () => {
-        // Remove results screen and reset variables
-        document.body.removeChild(resultsContainer);
-        currentQuestionIndex = 0;
-        currentQuestionElement = null;
-        timerInterval = null;
-        timeRemaining = 15;
-        score = 0;
-        unansweredQuestions = [];
-        correctAnswers = [];
-        incorrectAnswers = [];
-
-        // Show main menu or initial screen
-        showNextQuestion();
-    };
-    resultsContainer.appendChild(mainMenuButton);
 }
-
 // Mostrar la pregunta inicial
 showNextQuestion();

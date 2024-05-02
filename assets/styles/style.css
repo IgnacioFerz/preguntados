@@ -84,3 +84,18 @@ h1, h2, h3 {
 .progress-bar.progress-bar-striped {
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, rgba(255, 255, 255, 0.75) 1px, rgba(255, 255, 255, 0.15) 5px, rgba(255, 255, 255, 0.75) 5px);
 }
+.text-success {
+    color: #28a745;
+}
+
+.btn-primary {
+    width: 200px;
+    background-color: #007bff;
+    border-color: #007bff;
+    margin-left: 43%;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
