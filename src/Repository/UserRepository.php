@@ -29,6 +29,41 @@ class UserRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getUsersToQueue(): array
+    {
+        $estado = 'searching';
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.queue  = :date')
+            ->setParameter('date', $estado)
+            ->getQuery()
+            ->getResult();
+    }
+    public function getUserForId(User $user): int
+
+    {
+        $id = $user->getId();
+        return $id;
+    }
+
+    public function addUserToQueue(User $user)
+    {
+        $user->setQueue('searching');
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+    public function removeUserToQueue(User $user)
+    {
+        $user->setQueue('disable');
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+    public function addGameQueue(User $user)
+    {
+        $user->setQueue('en-game');
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
 
     //    /**
     //     * @return User[] Returns an array of User objects

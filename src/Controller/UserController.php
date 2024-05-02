@@ -20,12 +20,12 @@ class UserController extends AbstractController
         private readonly UserRepository $repository,
         private readonly UserService $userService
     ){}
-    #[Route('/user', name: 'app_user')]
+    #[Route('/register', name: 'app_user')]
     public function index(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         //$this->userService->checkdb();
         $user = new User();
-        $crearUser = $this->userService->HandleCreateUser($request, $passwordHasher, $user);
+        $crearUser = $this->userService->handleCreateUser($request, $passwordHasher, $user);
         if($crearUser->getStatusCode() === Response::HTTP_OK)
         {
             return $this->redirectToRoute('app_login');

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PreguntaRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PreguntaRepository::class)]
@@ -21,6 +22,12 @@ class Pregunta
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tema = null;
+
+    #[ORM\ManyToOne(inversedBy: 'preguntas')]
+    private ?Partida $partida = null;
+
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $respuestasIncorrectas = [];
 
     public function getId(): ?int
     {
@@ -59,6 +66,30 @@ class Pregunta
     public function setTema(?string $tema): static
     {
         $this->tema = $tema;
+
+        return $this;
+    }
+
+    public function getPartida(): ?Partida
+    {
+        return $this->partida;
+    }
+
+    public function setPartida(?Partida $partida): static
+    {
+        $this->partida = $partida;
+
+        return $this;
+    }
+
+    public function getRespuestasIncorrectas(): array
+    {
+        return $this->respuestasIncorrectas;
+    }
+
+    public function setRespuestasIncorrectas(array $respuestasIncorrectas): static
+    {
+        $this->respuestasIncorrectas = $respuestasIncorrectas;
 
         return $this;
     }

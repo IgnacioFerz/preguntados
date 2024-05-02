@@ -2,4 +2,13 @@ controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
+
+        App\Api\UserInfoApi:
+            resource: 'App\Api\UserInfoApi.php'
+
+        app_partida:
+            path: /partida/{id}
+            name: 'app_partida'
+            requirements:
+                id: '\d+'
     type: attribute
