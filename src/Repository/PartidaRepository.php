@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Partida;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,6 +33,14 @@ class PartidaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
             ;
+    }
+    public function setGameInfo(Partida $partida, User $user1, User $user2,  ): void
+    {
+        $partida->setJugador1($user1);
+        $partida->setJugador2($user2);
+        $partida->setEstado('en-game');
+        $this->em->persist($partida);
+        $this->em->flush();
     }
 
     public function getPoints(Partida $partida, $id)

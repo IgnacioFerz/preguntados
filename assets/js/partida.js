@@ -45,6 +45,7 @@ function showNextQuestion() {
 
     // **Incrementar el índice aquí para evitar una verificación innecesaria en el bucle**
     currentQuestionIndex++;
+    console.log(currentQuestionIndex)
 }
 
 // Función para restablecer el temporizador
@@ -62,7 +63,6 @@ function updateTimerDisplay() {
     // Comprobar si se ha agotado el tiempo y marcar la respuesta como incorrecta
     if (timeRemaining === 0) {
         markUnansweredQuestionAsIncorrect();
-        showNextQuestion();
     }
 }
 
@@ -83,10 +83,8 @@ function markAnswerAsIncorrect() {
     // Añadir un retraso de 2 segundos antes de mostrar la siguiente pregunta
     setTimeout(function() {
         disableAnswerButtons();
-        showNextQuestion();
-        updateQuestion();
+        sendResultsToBackend()
     }, 2000);
-    sendResultsToBackend()
 }
 
 // Función para marcar una respuesta como correcta
@@ -99,10 +97,8 @@ function markAnswerAsCorrect(questionElement) {
     // Añadir un retraso de 2 segundos antes de mostrar la siguiente pregunta
     setTimeout(function() {
         disableAnswerButtons();
-        showNextQuestion();
-        updateQuestion();
+        sendResultsToBackend()
     }, 2000);
-    sendResultsToBackend()
 }
 
 // Función para marcar una pregunta sin respuesta como incorrecta
@@ -112,8 +108,6 @@ function markUnansweredQuestionAsIncorrect() {
     puntuacion--;
     respuesta = 'incorrecta';
     incorrectAnswers.push(currentQuestionElement);
-    showNextQuestion();
-    updateQuestion();
     sendResultsToBackend();
 }
 
@@ -171,6 +165,7 @@ async function updateQuestion(resultElement){
         }
     }catch (error) {
         console.error('Error al actualizar la posicion de la pregunta:', error);
+        location.reload(); // Refresh the page
         return null; // Devuelve null en caso de error
     }
 }
@@ -210,6 +205,8 @@ async function sendResultsToBackend() {
     } finally {
         clearInterval(timerInterval);
     }
+    await updateQuestion();
+    showNextQuestion();
 }
 async function seeResult(){
     const response = await axios.post('/api/final');
