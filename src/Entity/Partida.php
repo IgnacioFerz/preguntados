@@ -39,6 +39,9 @@ class Partida
     #[ORM\Column(nullable: true)]
     private ?int $preguntaJugador2 = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $url = null;
+
     public function __construct()
     {
         $this->preguntas = new ArrayCollection();
@@ -159,6 +162,18 @@ class Partida
     public function setPreguntaJugador2(?int $preguntaJugador2): static
     {
         $this->preguntaJugador2 = $preguntaJugador2;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): static
+    {
+        $this->url = $url;
 
         return $this;
     }

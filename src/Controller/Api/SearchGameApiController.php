@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Partida;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,4 +52,17 @@ class SearchGameApiController extends AbstractController
 
         return new Response('Cola cancelada', Response::HTTP_OK);
     }
+
+    #[Route('/api/getUrl', name: 'getUrl', methods: ['GET'])]
+    public function getUrl(Partida $partida): Response
+    {
+        $url = $partida->getUrl();
+        if(!empty($url))
+        {
+            return new Response($url, Response::HTTP_OK);
+        }
+        return new Response('No hay url para esta partida', Response::HTTP_BAD_REQUEST);
+    }
+
+
 }

@@ -9,6 +9,7 @@ window.onload = function() {
         // Update buttons
         buscarPartidaButton.classList.add('d-none');
         cancelarColaButton.classList.remove('d-none');
+        longPolling();
 
         try {
             const response = await fetch('/api/buscarpartida');
@@ -22,6 +23,30 @@ window.onload = function() {
             console.error('Error:', error.message);
         }
     });
+
+    async function longPolling() {
+        try {
+            const eventSource = new EventSource('/long-polling');
+
+            eventSource.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                const urlPartida = data.urlPartida;
+
+                if (urlPartida) {
+                    window.location.href = urlPartida;
+                }
+            };
+
+            eventSource.onerror = (error) => {
+                console.error("Error:", error);
+                eventSource.close();
+                setTimeout(longPolling, 3000); // Check 1 second
+            };
+        } catch (error) {
+            console.error("Error:", error);
+        }
+
+    }
 
     cancelarColaButton.addEventListener('click', async () => {
         spinner.style.display = 'block'; // Show spinner while canceling

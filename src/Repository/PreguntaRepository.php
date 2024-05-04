@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Pregunta;
+use App\Service\GetQuestionsFromApi;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,8 +18,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PreguntaRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private GetQuestionsFromApi $getQuestionsFromApi;
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, GetQuestionsFromApi $getQuestionsFromApi, EntityManagerInterface $entityManager)
     {
+        $this->getQuestionsFromApi = $getQuestionsFromApi;
+        $this->entityManager = $entityManager;
         parent::__construct($registry, Pregunta::class);
     }
     public function searchForGameId($id) :array
@@ -28,6 +34,15 @@ class PreguntaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+    public function addQuestions(Pregunta $pregunta, $partida,$preguntaData)
+    {
+        $pregunta->setPartida($partida);
+        $pregunta->setPregunta($preguntaData['texto']);
+        $pregunta->setRespuestaCorrecta($this->getQuestionsFromApi->getCorrectAnswer($preguntaData['respuestas']));
+        $pregunta->setRespuestasIncorrectas($this->getQuestionsFromApi->getIncorrectAnswer($preguntaData['respuestas']));
+        $this->entityManager->persist($pregunta);
+        $this->entityManager->flush();
     }
     //    /**
     //     * @return Pregunta[] Returns an array of Pregunta objects
