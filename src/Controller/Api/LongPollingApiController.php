@@ -42,7 +42,8 @@ class LongPollingApiController extends AbstractController
                 ->andWhere('p.estado = :estado')
                 ->setParameter('jugador1', $id)
                 ->setParameter('jugador2', $id)
-                ->setParameter('estado', 'starting');
+                ->setParameter('estado', 'starting')
+                ->setMaxResults(1);
 
             try {
                 $nuevaPartida = $qb->getQuery()->getOneOrNullResult();

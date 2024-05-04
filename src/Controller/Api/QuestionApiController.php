@@ -53,4 +53,17 @@ class QuestionApiController extends AbstractController
         return new JsonResponse(['message' => $result], Response::HTTP_OK);
 
     }
+    #[Route('api/update/state', name: 'updateState', methods: ['POST','GET'])]
+    public function updateState(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        if (empty($data)) {
+            return new Response('Invalid request format', Response::HTTP_BAD_REQUEST);
+        }
+        $partida = $this->partidaRepository->findGameById($data['partidaId']);
+        $this->partidaRepository->setFinish($partida);
+
+        return new JsonResponse(['message' => 'todo salio bien'], Response::HTTP_OK);
+
+    }
 }
