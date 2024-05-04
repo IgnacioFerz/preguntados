@@ -153,6 +153,7 @@ async function updateQuestion(resultElement){
             let button = document.createElement('button');
             button.classList.add('btn', 'btn-primary', 'mt-3');
             button.textContent = 'Volver a la página principal';
+            await axios.post('/api/update/state',{partidaId: parseInt(partidaId)});
             button.onclick = function() {
                 window.location.href = '/principal';
             };

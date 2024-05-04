@@ -47,6 +47,11 @@ class PartidaRepository extends ServiceEntityRepository
         $partida->setEstado('in-game');
         $this->em->flush();
     }
+    public function setFinish(Partida $partida)
+    {
+        $partida->setEstado('finish');
+        $this->em->flush();
+    }
 
     public function getPoints(Partida $partida, $id)
     {
