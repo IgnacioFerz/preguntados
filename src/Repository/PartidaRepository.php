@@ -38,8 +38,13 @@ class PartidaRepository extends ServiceEntityRepository
     {
         $partida->setJugador1($user1);
         $partida->setJugador2($user2);
-        $partida->setEstado('en-game');
+        $partida->setEstado('starting');
         $this->em->persist($partida);
+        $this->em->flush();
+    }
+    public function setInGame(Partida $partida)
+    {
+        $partida->setEstado('in-game');
         $this->em->flush();
     }
 

@@ -54,10 +54,12 @@ class LongPollingApiController extends AbstractController
 
 
             if ($nuevaPartida) {
+                $nuevaPartida->setEstado('in-game');
                 $urlPartida = $nuevaPartida->getUrl();
                 $datosRespuesta = ['urlPartida' => $urlPartida];
                 $response->setContent("data: ". json_encode($datosRespuesta). "\n\n");
                 $response->send();
+
                 break;
             }
 
