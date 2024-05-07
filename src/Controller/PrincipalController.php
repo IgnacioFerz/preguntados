@@ -14,9 +14,10 @@ class PrincipalController extends AbstractController
     #[Route('/principal', name: 'app_principal')]
     public function index(MailerInterface $mailer): Response
     {
-
+        $name = $this->getUser()->getName();
 
         return $this->render('principal/index.html.twig', [
+            'nombre' => $name
         ]);
     }
 }

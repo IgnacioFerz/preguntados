@@ -38,11 +38,27 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getUserById(int $id): ?User
+    {
+        return $this->createQueryBuilder('u')
+        ->andWhere('u.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
+
     public function getUserForId(User $user): int
 
     {
         $id = $user->getId();
         return $id;
+    }
+    public function getUserInfo(User $user)
+    {
+        $nombre  = $user->getName();
+        $mail = $user->getEmail();
+        $puntuacion = $user->getPuntuacion();
+
     }
 
     public function addUserToQueue(User $user)
