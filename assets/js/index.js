@@ -1,8 +1,10 @@
+import axios from "axios";
+
 window.onload = function() {
     const buscarPartidaButton = document.getElementById('buscarPartidaButton');
     const cancelarColaButton = document.getElementById('cancelarColaButton');
     const spinner = document.getElementById('spinner');
-
+    let MAX_RETRIES = 0;
     buscarPartidaButton.addEventListener('click', async () => {
         spinner.style.display = 'block'; // Show spinner and text
 
@@ -24,7 +26,7 @@ window.onload = function() {
         }
     });
 
-    async function longPolling() {
+    async function longPolling(retryCount = 0) {
         try {
             const eventSource = new EventSource('/long-polling');
 
@@ -39,13 +41,21 @@ window.onload = function() {
 
             eventSource.onerror = (error) => {
                 console.error("Error:", error);
-                eventSource.close();
-                setTimeout(longPolling, 3000); // Check 1 second
+
+                if (retryCount < MAX_RETRIES) {
+                    const waitTime = calculateWaitTime(retryCount);
+                    console.log(`Reintentando en ${waitTime} segundos (intento ${retryCount + 1})`);
+                    setTimeout(longPolling, waitTime * 1000, retryCount + 1);
+                } else {
+                    console.error("Error: Se alcanzó el límite de reintentos (5 reintentos)");
+                    // Maneja la terminación después de 5 reintentos (por ejemplo, muestra un mensaje de error al usuario)
+                    eventSource.close();
+                    // Implementar la lógica de terminación aquí
+                }
             };
         } catch (error) {
             console.error("Error:", error);
         }
-
     }
 
     cancelarColaButton.addEventListener('click', async () => {
@@ -68,4 +78,25 @@ window.onload = function() {
             console.error('Error:', error.message);
         }
     });
+    const rankingContainer = document.getElementById('container-ranking');
+
+    axios.get('/api/ranking')
+        .then(response =>
+        {
+            const rankingData = response.data;
+
+            // Process and display the ranking data
+            rankingContainer.innerHTML = rankingData.map(user => {
+                return `
+                <div class="ranking-item">
+                    <span class="username">${user.name}</span>
+                    <span class="puntuacion">${user.puntuacion}</span>
+                </div>
+            `;
+            }).join('');
+        })
+
+        .catch(error => {
+            console.error('Error fetching ranking:', error);
+        });
 };

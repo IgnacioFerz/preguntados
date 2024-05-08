@@ -94,6 +94,7 @@ class PartidaRepository extends ServiceEntityRepository
         }
         $this->getEntityManager()->flush();
     }
+
     public function updateQuestionPosition(Partida $partida, $id): ?string
     {
         $jugador1Id = $partida->getJugador1()->getId();
@@ -101,20 +102,27 @@ class PartidaRepository extends ServiceEntityRepository
         $j1 = $partida->getPreguntaJugador1();
         $j2 = $partida->getPreguntaJugador2();
 
-        if($jugador1Id === $id)
+        if ($jugador1Id === $id)
         {
-            if($j1 < 10)
+            if ($j1 < 10)
             {
                 $partida->setPreguntaJugador1($partida->getPreguntaJugador1()+1);
                 $this->getEntityManager()->flush();
                 return null;
             }
-            else if($j1 = 10 && $j2 = 10){
-                return $this->getWiner($partida);
+            else if ($j1 == 10)
+            {
+                if ($j2 < 10)
+                {
+                    return "Esperando a que el jugador 2 alcance la pregunta 10.";
+                }
+                else if ($j2 == 10)
+                {
+                    return $this->getWiner($partida);
+                }
             }
-            return null;
         }
-        else if($jugador2Id === $id)
+        else if ($jugador2Id === $id)
         {
             if($j2 < 10)
             {
@@ -122,13 +130,21 @@ class PartidaRepository extends ServiceEntityRepository
                 $this->getEntityManager()->flush();
                 return null;
             }
-            else if($j2 = 10 && $j2 = 10){
-                return $this->getWiner($partida);
+            else if($j2 == 10)
+            {
+                if($j1 < 10)
+                {
+                    return "Esperando a que el jugador 1 alcance la pregunta 10.";
+                }
+                else if($j1 == 10)
+                {
+                    return $this->getWiner($partida);
+                }
             }
-            return null;
         }
         return null;
     }
+
     public function getQuestionPosition(Partida $partida, $id)
     {
         if($id == $partida->getJugador1()->getId())

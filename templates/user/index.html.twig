@@ -6,46 +6,65 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            width: 100%;
-            padding: 20px;
+            width: 30%; /* Adjust width as needed */
+            padding: 30px;
             border-radius: 10px;
-            background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #6a93bd;
         }
+
         .container h1 {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
         }
-        .form-control {
-            margin-bottom: 10px;
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        .mt-4 {
-            margin-top: 1.5rem;
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px; /* Add margin for vertical spacing */
+        }
+
+        .btn-primary {
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
     </style>
 {% endblock %}
+
 {% block title %}Registro{% endblock %}
 
 {% block body %}
-    <div class="container bg-info">
-    {{ form_start(registration_form) }}
 
-    <div class="row">
-        <div class="col-md-6">
-            {{ form_row(registration_form.name, {'type': 'text','attr': {'class': 'form-control mb-3'}}) }}
-            {{ form_row(registration_form.password, {'type': 'password', 'attr': {'class': 'form-control mb-3'}}) }}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+
+                {{ form_start(registration_form) }}
+                <h1>Registrate!</h1>
+                <p>Si ya tienes una cuenta, <a href="{{ path('app_login') }}">inicia sesion</a></p>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_row(registration_form.name, {'type': 'text', 'attr': {'class': 'form-control mb-3'}}) }}
+                        {{ form_row(registration_form.password, {'type': 'password', 'attr': {'class': 'form-control mb-3'}}) }}
+                        {{ form_row(registration_form.email, {'type': 'email', 'attr': {'class': 'form-control mb-3'}}) }}
+                    </div>
+                </div>
+
+                {{ form_end(registration_form) }}
+            </div>
         </div>
-        <div class="col-md-6">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            {{ form_row(registration_form.email, {'type': 'email','attr': {'class': 'form-control mb-3'}}) }}
-        </div>
-
-
-        {{ form_end(registration_form) }}
     </div>
 {% endblock %}

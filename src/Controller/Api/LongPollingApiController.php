@@ -34,7 +34,15 @@ class LongPollingApiController extends AbstractController
         $jsonData = json_decode($userId, true);
         $id = $jsonData['userId'];
 
+        $startTime = microtime(true);
         while (true) {
+            $elapsedTime = microtime(true) - $startTime;
+            if ($elapsedTime >= 5) { // Check if 30 seconds have passed
+                $response->setContent("data: ". json_encode(['error' => 'Timeout reached']). "\n\n");
+                $response->send();
+                break;
+            }
+
             $qb = $this->entityManager->createQueryBuilder();
             $qb->select('p')
                 ->from(Partida::class, 'p')

@@ -1,107 +1,134 @@
-{% extends 'base.html.twig' %}
+{% extends 'btemplate.html.twig' %}
 
 {% block title %}Hello PrincipalController!{% endblock %}
 
 {% block body %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preguntados - Symfony</title>
+    <html lang="en">
 
-</head>
-<style>
-    body {
-        height: 100vh;
-        background-color: #22a7bd;
-        display: flex;
-        flex-direction: column;
-    }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Preguntados - Symfony</title>
 
-    .main-content {
-        flex: 1;
-    }
+        <style>
+            body {
+                height: 100vh;
+                background-color: #6a93bd;
+                display: flex;
+                flex-direction: column;
+            }
 
-    footer {
-        flex: 0 0 auto;
-        align-items: flex-end;
-    }
-    .spinner {
-        width: 50px;
-        height: 50px;
-        border: 10px solid #f3f3f3; /* Color de borde gris claro */
-        border-radius: 50%;
-        border-top: 10px solid #3498db; /* Color de la barra superior (azul) */
-        animation: spin 1.2s linear infinite; /* Animación de giro */
-        display: none; /* Initially hidden */
-    }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+            footer {
+                flex: 0 0 auto;
+                align-items: flex-end;
+            }
 
-    .buscando-partida {
-        font-size: 14px;
-        margin-top: 10px;
-        color: #3498db; /* Color del texto azul */
-        display: none; /* Initially hidden */
-    }
-    .cancelar-cola {
-        font-size: 14px;
-        margin-top: 10px;
-        color: #3498db; /* Color del texto azul */
-        display: none; /* Initially hidden */
-    }
-</style>
+            nav
+            {
+                background-color: skyblue;
+                display: flex; /* Use flexbox for alignment */
+                justify-content: space-between; /* Distribute elements evenly */
+                align-items: center;
+                padding: 10px 20px; /* Add padding for spacing */
+            }
 
-<body>
-    <div class="main-content">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            footer
+            {
+                background-color: skyblue;
+            }
 
-            <a class="navbar-brand" href="#">Preguntados</a>
+            .spinner {
+                width: 50px;
+                height: 50px;
+                border: 10px solid #f3f3f3; /* Color de borde gris claro */
+                border-radius: 50%;
+                border-top: 10px solid #3498db; /* Color de la barra superior (azul) */
+                animation: spin 1.2s linear infinite; /* Animación de giro */
+                display: none; /* Initially hidden */
+            }
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
 
-            <div id="spinner" class="spinner"></div>
+            #buscarPartidaButton {
+                background-color: #3498db; /* Blue color */
+                color: white; /* White text for better contrast */
+                border: 2px solid #007bff; /* Blue border */
+                border-radius: 20px; /* Slightly rounded corners */
+                text-align: center;
+                width: 300px;
+                height: 100px;
+                margin-top: 15%;
+                margin-left: 43%;
+            }
+            #cancelarColaButton
+            {
+                background-color: #3498db; /* Blue color */
+                color: white; /* White text for better contrast */
+                border: 2px solid #007bff; /* Blue border */
+                border-radius: 20px; /* Slightly rounded corners */
+                text-align: center;
+                width: 300px;
+                height: 100px;
+                margin-top: 15%;
+                margin-left: 43%;
+            }
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <button id="buscarPartidaButton" class="nav-link" href="#">Buscar partida</button>
-                        <button id="cancelarColaButton" class="nav-link d-none" href="#">Cancelar cola</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" href="#">Mi perfil</button>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+            #title-nav
+            {
+                margin-left: 45%;
+                font-size: 30px;
+            }
+            #perfil
+            {
+                margin-left: 40%;
+            }
 
-        <div class="container mt-5">
-            <!-- Main Content -->
-            <ul>
-                <li>1º Nacho</li>
-            </ul>
-            <p id="userIdDisplay"></p>
-        </div>
-    </div>
+            #container-ranking
+            {
+                margin-left: auto;
+                padding-right: 15px;
+            }
+            #container-ranking-tittle
+            {
+                margin-left: auto;
+                padding-right: 15px;
+            }
 
-    <footer class="footer mt-auto py-3 bg-light">
+        </style>
+
+    </head>
+    <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light ">
+        <h1 id='title-nav' class="navbar-brand" href="{{ path('app_principal') }}">Preguntados</h1>
+        <a id='perfil' class="nav-link" href="{{ path('app_perfil', {'nombre': nombre}) }}">{{ nombre }}</a>
+    </nav>
+
+    <div id="spinner" class="spinner"></div>
+
+    <button id="buscarPartidaButton" class="nav-link" href="#">Buscar partida</button>
+        <button id="cancelarColaButton" class="nav-link d-none" href="#">Cancelar cola</button>
+
+    <h1 id="container-ranking-tittle">Ranking</h1>
+    <div id="container-ranking"></div>
+
+    <footer class="footer mt-auto py-3 ">
         <div class="container text-center">
             <span class="text-muted">IgnacioFerz@github &hearts;</span>
         </div>
     </footer>
 
-    {% block javascripts %}
-        <script src="{{ asset('js/index.js') }}" defer></script>
-    {% endblock %}
+    <script type="module" src="{{ asset('js/index.js') }}" ></script>
 
-</body>
+    </body>
 
-</html>
+    </html>
+
+
 
 {% endblock %}
