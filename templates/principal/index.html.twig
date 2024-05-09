@@ -85,7 +85,9 @@
             }
             #perfil
             {
-                margin-left: 40%;
+                margin: 10px 0 0 auto;
+                margin-right: 30px;
+                font-size: 25px;
             }
 
             #container-ranking
@@ -97,6 +99,46 @@
             {
                 margin-left: auto;
                 padding-right: 15px;
+            }
+            .card {
+                margin: 10px 0 0 auto; /* Add some margin for spacing */
+                margin-right: 20px;
+                width: 80%; /* Adjust width as needed */
+                max-width: 120px; /* Set a maximum width for responsiveness */
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            }
+
+            /* Style the card header */
+            .card-header {
+                background-color: #f8f9fa; /* Light background color */
+                border-bottom: 1px solid #e7e7e7; /* Add a subtle border */
+                text-align: center; /* Center the title text */
+            }
+
+            /* Style the card body */
+            .card-body {
+                padding: 20px; /* Add padding for spacing */
+            }
+            #container-ranking-tittle
+            {
+                margin-right: 5px;
+            }
+
+            .ranking-item {
+                display: flex; /* Arrange items in a row */
+                justify-content: space-between; /* Distribute items evenly */
+                align-items: center; /* Align items vertically */
+                margin-bottom: 10px; /* Add some margin between items */
+                border-bottom: 1px solid #e7e7e7; /* Add a subtle border */
+                padding: 0px; /* Add some padding inside the item */
+            }
+
+            .username {
+                font-weight: bold; /* Make username bold */
+            }
+
+            .puntuacion {
+                color: #3498db; /* Blue color for the score */
             }
 
         </style>
@@ -114,8 +156,11 @@
     <button id="buscarPartidaButton" class="nav-link" href="#">Buscar partida</button>
         <button id="cancelarColaButton" class="nav-link d-none" href="#">Cancelar cola</button>
 
-    <h1 id="container-ranking-tittle">Ranking</h1>
-    <div id="container-ranking"></div>
+    <div class="card">
+        <h5 class="card-header" id="container-ranking-tittle">Ranking</h5>
+        <div class="card-body" id="container-ranking">
+        </div>
+    </div>
 
     <footer class="footer mt-auto py-3 ">
         <div class="container text-center">
