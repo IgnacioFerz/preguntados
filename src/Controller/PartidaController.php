@@ -46,9 +46,8 @@ class PartidaController extends AbstractController
         // Obtener los jugadores de la partida
         $jugador1 = $partida->getJugador1();
         $jugador2 = $partida->getJugador2();
-        $this->getQuestionsFromApi->getPreguntasFromTrivialAPI();
         $preguntas = $this->preguntaRepository->searchForGameId($id);
-        $preguntasDeshorder = $this->formatQuestionsService->formatQuestions($preguntas);
+        $respuestasDeshorder = $this->formatQuestionsService->formatQuestions($preguntas);
 
         // Renderizar la vista del juego y pasar los datos de la partida, jugadores y preguntas
         return $this->render('partida/index.html.twig', [
@@ -56,6 +55,7 @@ class PartidaController extends AbstractController
             'jugador1' => $jugador1,
             'jugador2' => $jugador2,
             'preguntas' => $preguntas,
+            'respuestasDeshorder' => $respuestasDeshorder,
         ]);
 
     }

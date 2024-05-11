@@ -24,17 +24,12 @@ class PerfilEditController extends AbstractController
         $user = $this->userRepository->getUserById($this->getUser()->getId());
 
         $nombre = $user->getName();
-        $mail = $user->getEmail(); // Keep email read-only (optional)
-        $puntos = $user->getPuntuacion();
 
-        $editForm = $this->createForm(UserType::class, $user); // Create form based on UserType
-        $editForm->handleRequest($request);
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // Access submitted form data (example)
-            $submittedNombre = $request->request->get('nombre');
-
-            $user->setName($submittedNombre);  // Update user with submitted data
 
             $this->userRepository->save($user, true); // Update user in database (flush)
             $this->addFlash('success', '¡Perfil actualizado con éxito!'); // Set flash message
@@ -44,9 +39,7 @@ class PerfilEditController extends AbstractController
 
         return $this->render('perfil_edit/index.html.twig', [
             'nombre' => $nombre,
-            'mail' => $mail,
-            'puntos' => $puntos,
-            'editForm' => $editForm->createView(),
+            'form' => $form->createView(),
         ]);
     }
 }

@@ -11,32 +11,6 @@
         <title>Preguntados - Symfony</title>
 
         <style>
-            body {
-                height: 100vh;
-                background-color: #6a93bd;
-                display: flex;
-                flex-direction: column;
-            }
-
-
-            footer {
-                flex: 0 0 auto;
-                align-items: flex-end;
-            }
-
-            nav
-            {
-                background-color: skyblue;
-                display: flex; /* Use flexbox for alignment */
-                justify-content: space-between; /* Distribute elements evenly */
-                align-items: center;
-                padding: 10px 20px; /* Add padding for spacing */
-            }
-
-            footer
-            {
-                background-color: skyblue;
-            }
 
             .spinner {
                 width: 50px;
@@ -77,93 +51,43 @@
                 margin-left: 43%;
             }
 
-            #title-nav
-            {
-                margin-left: 45%;
-                font-size: 30px;
-            }
-            #perfil
-            {
-                margin: 10px 0 0 auto;
-                margin-right: 30px;
-                font-size: 25px;
-            }
-
-            #container-ranking
-            {
-                margin-left: auto;
-                padding-right: 15px;
-            }
-            #container-ranking-tittle
-            {
-                margin-left: auto;
-                padding-right: 15px;
-            }
-            .card {
-                margin: 10px 0 0 auto; /* Add some margin for spacing */
-                margin-right: 20px;
-                width: 80%; /* Adjust width as needed */
-                max-width: 120px; /* Set a maximum width for responsiveness */
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-            }
-
-            /* Style the card header */
-            .card-header {
-                background-color: #f8f9fa; /* Light background color */
-                border-bottom: 1px solid #e7e7e7; /* Add a subtle border */
-                text-align: center; /* Center the title text */
-            }
-
-            /* Style the card body */
-            .card-body {
-                padding: 20px; /* Add padding for spacing */
-            }
-            #container-ranking-tittle
-            {
-                margin-right: 5px;
-            }
-
-            .ranking-item {
-                display: flex; /* Arrange items in a row */
-                justify-content: space-between; /* Distribute items evenly */
-                align-items: center; /* Align items vertically */
-                margin-bottom: 10px; /* Add some margin between items */
-                border-bottom: 1px solid #e7e7e7; /* Add a subtle border */
-                padding: 0px; /* Add some padding inside the item */
-            }
-
-            .username {
-                font-weight: bold; /* Make username bold */
-            }
-
-            .puntuacion {
-                color: #3498db; /* Blue color for the score */
-            }
-            #Ranking-h2
-            {
-                margin-left: 10%;
-            }
-
         </style>
 
     </head>
     <body>
 
     <nav class="navbar navbar-expand-lg navbar-light ">
-        <a id="logout" class="nav-link" href="http://127.1.5.20:8000/logout">Logout</a>
-        <a id='Ranking-h2' class="navbar-brand" href="{{ path('app_ranking') }}">Ranking</a>
-        <h1 id='title-nav' class="navbar-brand" href="{{ path('app_principal') }}">Preguntados</h1>
-        <a id='perfil' class="nav-link" href="{{ path('app_perfil', {'nombre': nombre}) }}">{{ nombre }}</a>
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('app_principal') }}">Preguntados</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ path('app_ranking') }}">Ranking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_perfil', {'nombre': nombre}) }}">{{ nombre }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id='logout' class="nav-link" href="http://127.1.5.20:8000/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
     <div id="spinner" class="spinner"></div>
 
     <button id="buscarPartidaButton" class="nav-link" href="#">Buscar partida</button>
-        <button id="cancelarColaButton" class="nav-link d-none" href="#">Cancelar cola</button>
+    <button id="cancelarColaButton" class="nav-link d-none" href="#">Cancelar cola</button>
 
-    <div class="card">
-        <h5 class="card-header" id="container-ranking-tittle">Ranking</h5>
-        <div class="card-body" id="container-ranking">
+    <div class="container-fluid">
+        <div class="fixed-bottom pb-3 mb-4 ">
+            <div class="alert alert-info text-center" role="alert">
+                <p class="mb-0">Esta terminantemente prohibido hacer trampas. En caso de que algún jugador encuentre algún bug tiene que reportarlo al siguiente email: <a href="mailto:ignacio.com" class="alert-link">ignacio.com</a></p>
+            </div>
         </div>
     </div>
 
