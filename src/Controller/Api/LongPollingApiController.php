@@ -37,7 +37,7 @@ class LongPollingApiController extends AbstractController
         $startTime = microtime(true);
         while (true) {
             $elapsedTime = microtime(true) - $startTime;
-            if ($elapsedTime >= 5) { // Check if 30 seconds have passed
+            if ($elapsedTime >= 3) { // Check if 2 seconds have passed
                 $response->setContent("data: ". json_encode(['error' => 'Timeout reached']). "\n\n");
                 $response->send();
                 break;

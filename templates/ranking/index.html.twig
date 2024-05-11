@@ -1,0 +1,33 @@
+{% extends 'btemplate.html.twig' %}
+
+{% block title %}Hello RankingController!{% endblock %}
+
+{% block body %}
+
+    <nav class="navbar navbar-expand-lg navbar-light ">
+        <a id="logout" class="nav-link" href="http://127.1.5.20:8000/logout">Logout</a>
+        <a id='Ranking-h2' class="navbar-brand" href="{{ path('app_ranking') }}">Ranking</a>
+        <a id='title-nav' class="navbar-brand" href="{{ path('app_principal') }}">Preguntados</a>
+        <a id='perfil' class="nav-link" href="{{ path('app_perfil', {'nombre': nombre}) }}">{{ nombre }}</a>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card mx-auto" style="width: 18rem;">
+            <div class="card-header text-center">
+                <h2>Ranking de Jugadores</h2>
+            </div>
+            <div class="card-body">
+                {% if ranking is defined %}
+                    <ol>
+                        {% for item in ranking %}
+                            <li>{{ item.name }} - {{ item.puntuacion }}</li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>No hay datos de ranking disponibles.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

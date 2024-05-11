@@ -19,6 +19,9 @@ console.log("Partida ID:", partidaId);
 // Obtener la lista de preguntas
 let questionList = document.getElementById('question-list');
 let questionItems = questionList.querySelectorAll('.question-item');
+console.log(questionList, 'questionList')
+console.log(questionItems, 'questionItems')
+
 
 
 // Función para mostrar la siguiente pregunta

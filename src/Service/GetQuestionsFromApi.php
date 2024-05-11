@@ -12,29 +12,42 @@ class GetQuestionsFromApi
         $response = file_get_contents($apiUrl); // Obtener la respuesta JSON de la API
         $responseData = json_decode($response, true); // Decodificar JSON a un array
 
-        if ($responseData) { // Check if any data is returned
+        if ($responseData)
+        { // Check if any data is returned
             $preguntas = []; // Array para almacenar las preguntas
 
-            foreach ($responseData as $preguntaData) {
-                $pregunta = [
-                    'texto' => $preguntaData['question'],
-                    'respuestas' => [
+            foreach ($responseData as $preguntaData)
+            {
+                $respuestasorder =
+                    [
                         $preguntaData['correctAnswer'] => true,
                         $preguntaData['incorrectAnswers'][0] => false,
                         $preguntaData['incorrectAnswers'][1] => false,
                         $preguntaData['incorrectAnswers'][2] => false,
-                    ]
+                    ];
+                $keys = array_keys($respuestasorder);
+                shuffle($keys);
+                $arrayDesordenado = [];
+                foreach ($keys as $key)
+                {
+                    $arrayDesordenado[$key] = $respuestasorder[$key];
+                }
+                $pregunta = [
+                    'texto' => $preguntaData['question'],
+                    'respuestas' => $arrayDesordenado
                 ];
-
                 $preguntas[] = $pregunta;
             }
-
             return $preguntas;
-        } else {
+
+        } else
+        {
             // Manejar error al obtener preguntas de la API
             throw new Exception('Error al obtener preguntas de Trivial API');
         }
+
     }
+
     public function getCorrectAnswer($answersArray): ?string
     {
         foreach ($answersArray as $answer => $isCorrect) {
@@ -44,6 +57,7 @@ class GetQuestionsFromApi
         }
         return null;
     }
+
     public function getIncorrectAnswer($answersArray): ?array
     {
         $respuestasIncorrectas = [];
