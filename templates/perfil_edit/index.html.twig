@@ -14,7 +14,6 @@
     <style>
         body {
             height: 100vh;
-            background-color: #22a7bd;
             display: flex;
             flex-direction: column;
 
@@ -40,29 +39,71 @@
     <body>
     <div class="main-content">
         <nav class="navbar navbar-expand-lg navbar-light ">
-            <h1 id='title-nav' class="navbar-brand" href="{{ path('app_principal') }}">Preguntados</h1>
-            <a id='perfil' class="nav-link" href="{{ path('app_perfil', {'nombre': nombre}) }}">{{ nombre }}</a>
+            <div class="container">
+                <a class="navbar-brand" href="{{ path('app_principal') }}">Preguntados</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ path('app_ranking') }}">Ranking</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_perfil', {'nombre': nombre}) }}">{{ nombre }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id='logout' class="nav-link" href="http://127.1.5.20:8000/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
 
-        <div class="container mt-5">
-            <div id='card' class="card mx-auto">
+        <div class="container vh-100 d-flex align-items-center">
+            <div id='card' class="card m-auto w-50 p-3 shadow-lg">
                 <div class="card-header">
                     <h2>Editar Perfil</h2>
                 </div>
+
                 <form action="{{ path('app_perfil_edit') }}" method="post">
+
+                    {{ form_start(form) }}
+
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ nombre }}">
+
+                        <div class="list-group list-group-flush">
+                            <div class="form-group">
+
+                                {{ form_label(form.name, 'Nombre') }}
+
+                                {{ form_widget(form.name) }}
+
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_label(form.email, 'Correo') }}
+                                {{ form_widget(form.email, {'attr': {'readonly': 'readonly'}}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.password, 'password') }}
+                                {{ form_widget(form.password, {'attr': {'readonly': 'readonly'}}) }}
+                            </div>
+
+                                {{ form_widget(form.submit, {'attr': {'style': 'display: none;'}}) }}
+
                         </div>
-                        <div class="form-group">
-                            <label for="email">Correo</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ mail }}" disabled>
-                        </div>
+
                     </div>
+
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+
+                        <button id='actualizar_perfil_button' type="submit" class="btn btn-primary">Actualizar Perfil</button>
+
                     </div>
+
+                    {{ form_end(form) }}
+
                 </form>
             </div>
         </div>

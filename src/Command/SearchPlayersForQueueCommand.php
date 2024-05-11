@@ -20,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\RouterInterface;
 
 #[AsCommand(
-    name: 'search-players-queue',
+    name: 'search-players',
     description: 'Add a short description for your command',
 )]
 class SearchPlayersForQueueCommand extends Command
@@ -64,13 +64,23 @@ class SearchPlayersForQueueCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $users = $this->userRepository->getUsersToQueue();
-        foreach ($users as $user) {
-            if (count($users) >= 2) {
+        $usersCount = count($users);
+        $groups = [];
+        if(!$usersCount % 2)
+        {
+            $usersCount = $usersCount-1;
+        }
+        for ($i = 0; $i < $usersCount; $i += 2)
+        {
+            $groups[] = array_slice($users, $i, 2);
+        }
+        foreach ($groups as $group) {
+            if (count($group) >= 2) {
                 // Crear una partida
                 $partida = new Partida();
-                $this->partidaRepository->setGameInfo($partida, $users[0], $users[1]);
-                $this->userRepository->addGameQueue($users[0]);
-                $this->userRepository->addGameQueue($users[1]);
+                $this->partidaRepository->setGameInfo($partida, $group[0], $group[1]);
+                $this->userRepository->addGameQueue($group[0]);
+                $this->userRepository->addGameQueue($group[1]);
                 // Obtener preguntas de la API de Trivial
                 $preguntas = $this->getQuestionsFromApi->getPreguntasFromTrivialAPI();
                 // Añadir preguntas a la partida

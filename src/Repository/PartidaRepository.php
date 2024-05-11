@@ -159,10 +159,13 @@ class PartidaRepository extends ServiceEntityRepository
         $p1 = $partida->getPuntuajeJugador1();
         $p2 = $partida->getPuntuajeJugador2();
         if($p1 > $p2){
+            $points = $this->updatePoints($partida->getJugador1(), $p1 , $partida->getJugador2(), $p2);
+
             return 'El ganador de la partida es '.$partida->getJugador1()->getName(). ' Con '. $p1. ' Puntos!'.`</br>`.' El jugador '.$partida->getJugador2()->getName(). ' ha conseguido '
-                .$p2.' Puntos!';
+                .$p2.' Puntos! aa'.$points;
         }
         elseif($p1 < $p2){
+            $points = $this->updatePoints($partida->getJugador1(), $p1 , $partida->getJugador2(), $p2);
             return 'El ganador de la partida es '.$partida->getJugador2()->getName(). ' Con '. $p2. ' Puntos!'.`</br>`.' El jugador '.$partida->getJugador1()->getName(). ' ha conseguido '
                 .$p1.' Puntos!';
         }
@@ -170,6 +173,22 @@ class PartidaRepository extends ServiceEntityRepository
         {
             return 'Parece que ha habido un empate entre los jugadores! '.`</br>`. $partida->getJugador1()->getName(). $p1.`</br>`.$partida->getJugador2()->getName(). $p2. `</br>`;
         }
+
+    }
+    public function updatePoints(User $user1, $p1 , User $user2 , $p2)
+    {
+        if ($p1 > $p2) {
+            $user1->setPuntuacion($user1->getPuntuacion()+10);
+            $user2->setPuntuacion($user2->getPuntuacion()-10);
+            $this->em->flush();
+        }
+        else if ($p1 < $p2) {
+            $user2->setPuntuacion($user2->getPuntuacion()+10);
+            $user1->setPuntuacion($user1->getPuntuacion()-10);
+            $this->em->flush();
+        }
+        else
+            return null;
     }
 
     //    /**
