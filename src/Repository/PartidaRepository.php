@@ -86,7 +86,7 @@ class PartidaRepository extends ServiceEntityRepository
 
             if ($respuesta === 'correcta') {
                 $partida->setPuntuajeJugador2($puntuajeJugador2 + 1);
-            } else if ($puntuajeJugador2 !== null && $respuesta === 'incorrecta') {
+            } else if ($puntuajeJugador2 !== null && $puntuajeJugador2 += 0 && $respuesta === 'incorrecta') {
                 $partida->setPuntuajeJugador2($puntuajeJugador2 - 1);
             } else {
                 return null;
