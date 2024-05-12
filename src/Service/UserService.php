@@ -34,7 +34,7 @@ class UserService
             );
             $user->setPassword($hasedPassword);
             $user->setRoles(['ROLE_ADMIN']);
-            $user->setPuntuacion(100);
+            $user->setPuntuacion(1000);
             $user->setQueue('disable');
             $this->userRepository->save($user,true);
             return new JsonResponse(['succes'=>true]);
