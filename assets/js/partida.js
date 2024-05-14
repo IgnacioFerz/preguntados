@@ -13,16 +13,12 @@ const partidaId = partidaDataElement.dataset.partidaId;
 let respuesta = '';
 let userId = await getIdUserOn();
 
-console.log("Partida ID:", partidaId);
-
 
 // Obtener la lista de preguntas
 let questionList = document.getElementById('question-list');
 let questionItems = questionList.querySelectorAll('.question-item');
 console.log(questionList, 'questionList')
 console.log(questionItems, 'questionItems')
-
-
 
 // Función para mostrar la siguiente pregunta
 function showNextQuestion() {
@@ -221,5 +217,4 @@ async function seeResult(){
         console.error('Error al enviar datos:', response.statusText);
     }
 }
-// Mostrar la pregunta inicial
 showNextQuestion();

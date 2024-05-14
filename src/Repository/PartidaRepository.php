@@ -171,7 +171,8 @@ class PartidaRepository extends ServiceEntityRepository
         }
         else
         {
-            return 'Parece que ha habido un empate entre los jugadores! '.`</br>`. $partida->getJugador1()->getName(). $p1.`</br>`.$partida->getJugador2()->getName(). $p2. `</br>`;
+            return 'Parece que ha habido un empate entre los jugadores! '. $partida->getJugador1()->getName().' Ha conseguido '
+                . $p1.' Puntos '.$partida->getJugador2()->getName().' Ha conseguido '. $p2.' Puntos';
         }
 
     }
