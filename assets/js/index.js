@@ -32,7 +32,6 @@
                 const eventSource = new EventSource('/long-polling');
                 eventSource.onmessage = (event) => {
                     const data = JSON.parse(event.data);
-                    console.log('data', data)
                     const urlPartida = data.urlPartida;
 
                     if (urlPartida) {
