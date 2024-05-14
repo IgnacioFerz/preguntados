@@ -1,4 +1,6 @@
-    const buscarPartidaButton = document.getElementById('buscarPartidaButton');
+import axios from "axios";
+
+const buscarPartidaButton = document.getElementById('buscarPartidaButton');
     const cancelarColaButton = document.getElementById('cancelarColaButton');
     const spinner = document.getElementById('spinner');
     let isRunning = false;
@@ -104,5 +106,22 @@
             }
         } catch (error) {
             console.error('Error:', error.message);
+        }
+    });
+
+    const iconoCorazon = document.querySelector('.text-muted');
+    iconoCorazon.addEventListener('click', async () => {
+        try {
+            const respuesta = await axios.post('/partidas/check-finish-starting', {
+            });
+
+            if (!respuesta.ok) {
+                throw new Error(`Error al llamar al endpoint: ${respuesta.data.message}`);
+            }
+
+            console.log('Respuesta del endpoint:', respuesta.data);
+
+        } catch (error) {
+            console.error('Error al llamar al endpoint:', error);
         }
     });
